@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>杨志超无限公司 - 产品展示</title>
+  <style>
+    body {
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 20px;
+      font-family: "微软雅黑", sans-serif;
+    }
+    /* 图片放大遮罩层 */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    #lightbox-img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 8px;
+    }
+    footer {
+      text-align: center;
+      padding: 15px;
+      margin-top: 30px;
+      background-color: #f0f0f0;
+      color: #666;
+      font-size: 14px;
+    }
+    /* 容器样式 */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .title-link {
+      text-decoration: none;
+    }
+    .btn {          
+      display: block;
+      width: 150px;
+      padding: 10px;
+      margin: 20px auto;
+      background-color: #e63946;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background-color: #c02630;
+    }
+    h1 {
+      color: blue;
+      text-align: center;
+      background-color: #f0f0f0;
+      padding: 10px;
+      border-radius: 8px;
+    }
+    .pp1 {
+      text-align: center;
+      font-size: 18px;
+      color: red;
+      padding: 10px;
+      background-color: #ffebee;
+    }
+    .pp2 {
+      text-align: center;
+      font-size: 28px;
+      color: green;
+      padding: 10px;
+      background-color: #f0f0f0;
+    }
+    .my-photo {
+      width: 200px;
+      height: auto;
+      border: 3px solid #ddd;
+      border-radius: 12px;
+    }
+    .ppp {
+      width: 100px;
+      height: auto;
+      display: block;
+      margin: 40px auto;
+      border: 6px solid hwb(310 5% 9%);
+      border-radius: 12px;
+    }
+    /* 图片行 */
+    .photo-row {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 20px 0;
+    }
+    .more-photos {
+      display: none;
+    }
+    /* 手机端适配 */
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+      h1 {
+        font-size: 20px;
+      }
+      .pp2 {
+        font-size: 20px;
+      }
+      .my-photo {
+        width: 150px;
+      }
+      .photo-row {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+    /* 轮播图 */
+    .slider {
+      width: 300px;
+      height: 200px;
+      margin: 20px auto;
+      position: relative;
+    }
+    .slide {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      display: none;
+    }
+    .slider-btns {
+      text-align: center;
+      margin-top: 10px;
+    }
+    .slider-btns button {
+      padding: 6px 12px;
+      margin: 0 5px;
+      cursor: pointer;
+      background: #e63946;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+    /* 导航栏 */
+    .navbar {
+      background: #e63946;
+      overflow: hidden;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .navbar a {
+      float: left;
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 20px;
+      text-decoration: none;
+      font-size: 16px;
+    }
+    .navbar a:hover {
+      background: #c02630;
+      color: white;
+    }
+    /* 产品卡片 */
+    .product-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin: 30px 0;
+    }
+    .product-card {
+      width: 200px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 15px;
+      text-align: center;
+    }
+    .product-img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+    .product-title {
+      font-size: 16px;
+      color: #333;
+      margin: 5px 0;
+    }
+    .product-price {
+      font-size: 18px;
+      color: red;
+      font-weight: bold;
+      margin: 5px 0;
+    }
+    .buy-btn {
+      width: 100%;
+      padding: 8px;
+      background: #ff6600;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .buy-btn:hover {
+      background: #e55a00;
+    }
+    /* 表单样式 */
+    .contact-form {
+      max-width: 500px;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .form-title {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+    .contact-form input, .contact-form textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+    .contact-form button {
+      width: 100%;
+      padding: 12px;
+      background: #e63946;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .contact-form button:hover {
+      background: #c02630;
+    }
+    /* 留言框 */
+    .message-box {
+      max-width: 500px;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .message-box h3 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .message-box input, .message-box textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .message-box button {
+      width: 100%;
+      padding: 10px;
+      background: #e63946;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .message-box button:hover {
+      background: #c02630;
+    }
+    #msgList {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <!-- 图片放大遮罩层 -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <img src="" id="lightbox-img" />
+  </div>
+
+  <div class="container">
+    <!-- 导航栏 -->
+    <div class="navbar">
+      <a href="#">首页</a>
+      <a href="#">产品展示</a>
+      <a href="#">关于我们</a>
+      <a href="#">联系我们</a>
+    </div>
+
+    <!-- 标题 -->
+    <a href="https://www.baidu.com" class="title-link">
+      <h1>杨志超无限公司</h1>
+    </a>
+    <p class="pp1">我是一个穷苦人,我希望通过学习努力过上自己想要的生活</p>
+    <p class="pp2">欢迎各位观看咨询我下面的产品，有喜欢的请给我留言和联系方式我会尽快送到你们手上</p>
+
+    <!-- 图片展示 -->
+    <div class="photo-row">
+      <img src="3.jpeg" class="my-photo" onclick="openLightbox(this.src)"/>
+      <img src="1.jpeg" class="my-photo" onclick="openLightbox(this.src)"/>
+    </div>
+    <img src="5.jpeg" class="ppp" onclick="openLightbox(this.src)"/>
+
+    <!-- 轮播图 -->
+    <div class="slider" id="slider">
+      <img src="1.jpeg" class="slide" />
+      <img src="3.jpeg" class="slide" />
+      <img src="5.jpeg" class="slide" />
+    </div>
+    <div class="slider-btns">
+      <button onclick="prevSlide()">上一张</button>
+      <button onclick="nextSlide()">下一张</button>
+    </div>
+
+    <!-- 产品列表 -->
+    <div class="product-list">
+      <div class="product-card">
+        <img src="1.jpeg" class="product-img" onclick="openLightbox(this.src)"/>
+        <h3 class="product-title">我的青年照片</h3>
+        <p class="product-price">¥600</p>
+        <button class="buy-btn">立即购买</button>
+      </div>
+      <div class="product-card">
+        <img src="3.jpeg" class="product-img" onclick="openLightbox(this.src)"/>
+        <h3 class="product-title">我的汉服照片</h3>
+        <p class="product-price">¥888</p>
+        <button class="buy-btn">立即购买</button>
+      </div>
+      <div class="product-card">
+        <img src="5.jpeg" class="product-img" onclick="openLightbox(this.src)"/>
+        <h3 class="product-title">银河系照片</h3>
+        <p class="product-price">¥1314</p>
+        <button class="buy-btn">立即购买</button>
+      </div>
+    </div>
+
+    <!-- 顶部留言/下单表单 -->
+    <div class="contact-form">
+      <h3 class="form-title">留言/下单咨询</h3>
+      <form id="topContactForm">
+        <input name="name" placeholder="您的姓名" required>
+        <input name="phone" placeholder="联系电话" required>
+        <textarea name="content" placeholder="留言/需求" required></textarea>
+        <button type="submit">提交咨询</button>
+      </form>
+    </div>
+
+    <!-- 更多图片 -->
+    <div class="more-photos" id="morePhotos">
+      <div class="photo-row">
+        <img src="3.jpeg" class="my-photo" onclick="openLightbox(this.src)"/>
+        <img src="1.jpeg" class="my-photo" onclick="openLightbox(this.src)"/>
+      </div>
+    </div>
+    <button class="btn" onclick="showMessage()">查看更多照片</button>
+  </div>
+
+  <!-- 客服按钮 -->
+  <div style="position:fixed; right:20px; bottom:20px;">
+    <button style="background:#e63946; color:white; padding:10px 16px; border-radius:50px; font-size:16px; border:none;">
+      电话：138 0000 0000
+    </button>
+  </div>
+
+  <!-- 底部留言框 -->
+  <div class="message-box">
+    <h3>留言咨询</h3>
+    <input type="text" id="msgName" placeholder="你的姓名" required>
+    <textarea id="msgContent" placeholder="你的留言内容" required></textarea>
+    <button id="msgSubmitBtn">提交留言</button>
+    <div id="msgList"></div>
+  </div>
+  <!-- 购物车显示区域 -->
+<div class="cart-box" style="max-width:500px;margin:40px auto;padding:20px;background:white;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+  <h3 style="text-align:center;color:#333;margin-bottom:20px;">🛒 购物车</h3>
+  <div id="cartList"></div>
+  <button onclick="checkout()" style="width:100%;padding:12px;margin-top:20px;background:#ff6600;color:white;border:none;border-radius:4px;font-size:16px;">结算</button>
+  <button onclick="submitOrder()" style="width:100%;padding:12px;margin-top:10px;background:#007bff;color:white;border:none;border-radius:4px;font-size:16px;">提交订单</button>
+</div>
+
+<script>
+// 结算模拟（点击结算按钮）
+function checkout() {
+  const cart = JSON.parse(localStorage.getItem("myCart") || "[]");
+  if (cart.length === 0) {
+    alert("❌ 购物车为空，请先添加商品！");
+    return;
+  }
+  alert("✅ 模拟结算成功！（真实项目中会跳转到支付页面）");
+  // 清空购物车（测试用）
+  localStorage.removeItem("myCart");
+  renderCart();
+}
+</script>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <p>地址: 云南省广南县珠琳镇，  📞: 13774419938</p>
+  </footer>
+<script>
+// 🎯 本地存储版：不需要云配置，双击打开就能用
+// 1. 保存留言到本地浏览器
+function saveMessage(name, content, type = "普通留言") {
+  if (!name || !content) {
+    alert("请填写姓名和留言内容！");
+    return;
+  }
+  // 从本地读取已有留言
+  let messages = JSON.parse(localStorage.getItem("myMessages") || "[]");
+  // 把新留言加进去
+  messages.push({
+    name: name,
+    content: content,
+    type: type,
+    time: new Date().toLocaleString()
+  });
+  // 存回本地
+  localStorage.setItem("myMessages", JSON.stringify(messages));
+  return true;
+}
+
+// 2. 加载并显示留言
+function showMessages() {
+  let messages = JSON.parse(localStorage.getItem("myMessages") || "[]");
+  let list = document.getElementById("msgList");
+  if (messages.length === 0) {
+    list.innerHTML = "<div style='text-align:center;color:#999;'>暂无留言</div>";
+    return;
+  }
+  let html = "";
+  // 倒序显示（最新的在最上面）
+  messages.reverse().forEach(item => {
+    html += `
+      <div style="background:#f5f5f5;padding:10px;margin:10px 0;border-radius:6px;">
+        <strong>${item.name}</strong> (${item.type})
+        <div>${item.content}</div>
+        <div style="font-size:12px;color:#999;">${item.time}</div>
+      </div>
+    `;
+  });
+  list.innerHTML = html;
+}
+
+// 3. 底部留言提交
+document.getElementById("msgSubmitBtn").addEventListener("click", function() {
+  let name = document.getElementById("msgName").value.trim();
+  let content = document.getElementById("msgContent").value.trim();
+  if (saveMessage(name, content, "底部留言")) {
+    alert("✅ 留言提交成功！");
+    document.getElementById("msgName").value = "";
+    document.getElementById("msgContent").value = "";
+    showMessages(); // 刷新显示
+  }
+});
+
+// 4. 顶部下单咨询提交
+document.getElementById("topContactForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  let name = this.querySelector('[name="name"]').value.trim();
+  let phone = this.querySelector('[name="phone"]').value.trim();
+  let content = `电话：${phone}\n需求：${this.querySelector('[name="content"]').value.trim()}`;
+  if (saveMessage(name, content, "顶部下单")) {
+    alert("✅ 下单咨询提交成功！");
+    this.reset();
+    showMessages();
+  }
+});
+
+// 6. 轮播图功能
+let currentSlide = 0;
+function showSlide(index) {
+  let slides = document.getElementsByClassName("slide");
+  if (index >= slides.length) currentSlide = 0;
+  if (index < 0) currentSlide = slides.length - 1;
+  for (let i = 0; i < slides.length; i++) slides[i].style.display = "none";
+  slides[currentSlide].style.display = "block";
+}
+function nextSlide() { currentSlide++; showSlide(currentSlide); }
+function prevSlide() { currentSlide--; showSlide(currentSlide); }
+// 自动轮播
+function autoSlide() {
+  nextSlide();
+}
+// 每 2000 毫秒 = 2 秒切换一次
+setInterval(autoSlide, 4000);
+
+// 7. 图片放大功能
+function openLightbox(src) {
+  document.getElementById("lightbox").style.display = "flex";
+  document.getElementById("lightbox-img").src = src;
+}
+function closeLightbox() {
+  document.getElementById("lightbox").style.display = "none";
+}
+
+// 8. 显示更多图片
+function showMessage() {
+  let more = document.getElementById("morePhotos");
+  more.style.display = more.style.display === "none" ? "block" : "none";
+}
+// --------------------------
+// 🛒 购物车功能核心代码
+// --------------------------
+
+// 1. 把商品加入购物车
+function addToCart(productName, price) {
+  // 从本地读取购物车数据
+  let cart = JSON.parse(localStorage.getItem("myCart") || "[]");
+  
+  // 检查商品是否已在购物车中
+  const existingItem = cart.find(item => item.name === productName);
+  if (existingItem) {
+    existingItem.quantity += 1; // 数量+1
+  } else {
+    cart.push({
+      name: productName,
+      price: price,
+      quantity: 1
+    });
+  }
+  
+  // 存回本地
+  localStorage.setItem("myCart", JSON.stringify(cart));
+  alert(`✅ 已将「${productName}」加入购物车！`);
+  renderCart(); // 刷新购物车显示
+}
+
+// 2. 渲染购物车列表（在页面上显示购物车内容）
+function renderCart() {
+  const cart = JSON.parse(localStorage.getItem("myCart") || "[]");
+  const cartList = document.getElementById("cartList");
+  if (!cartList) return;
+
+  if (cart.length === 0) {
+    cartList.innerHTML = "<div style='text-align:center;color:#999;'>购物车为空</div>";
+    return;
+  }
+
+  let html = "";
+  let total = 0;
+  cart.forEach(item => {
+    const subtotal = item.price * item.quantity;
+    total += subtotal;
+    html += `
+      <div style="background:#f5f5f5;padding:10px;margin:10px 0;border-radius:6px;">
+        <strong>${item.name}</strong>
+        <div>单价：¥${item.price} × ${item.quantity} = ¥${subtotal}</div>
+        <button onclick="removeFromCart('${item.name}')" style="margin-top:5px;padding:4px 8px;background:#e63946;color:white;border:none;border-radius:4px;">删除</button>
+      </div>
+    `;
+  });
+  html += `<div style="text-align:right;font-weight:bold;margin-top:15px;">总计：¥${total}</div>`;
+  cartList.innerHTML = html;
+}
+
+// 3. 从购物车删除商品
+function removeFromCart(productName) {
+  let cart = JSON.parse(localStorage.getItem("myCart") || "[]");
+  cart = cart.filter(item => item.name !== productName);
+  localStorage.setItem("myCart", JSON.stringify(cart));
+  renderCart();
+}
+window.onload = function() {
+  // 原来的购物车代码
+  const buyBtns = document.querySelectorAll(".buy-btn");
+  buyBtns.forEach(btn => {
+    btn.addEventListener("click", function() {
+      const productCard = this.closest(".product-card");
+      const productName = productCard.querySelector(".product-title").textContent;
+      const productPrice = parseInt(productCard.querySelector(".product-price").textContent.replace("¥", ""));
+      addToCart(productName, productPrice);
+    });
+  });
+
+  // 👇 这里加 3 行（把前面删掉的功能补回来）
+  showMessages();
+  let slides = document.getElementsByClassName("slide");
+  if (slides.length > 0) slides[0].style.display = "block";
+
+  // 👇 再加 1 行（页面一打开就显示购物车）
+  renderCart();
+};
+// 提交订单
+function submitOrder() {
+  const cart = JSON.parse(localStorage.getItem("myCart") || "[]");
+  if (cart.length === 0) {
+    alert("购物车为空，不能提交订单！");
+    return;
+  }
+
+  // 让用户输入信息
+  let name = prompt("请输入您的姓名：");
+  if (!name) return;
+
+  let phone = prompt("请输入您的电话：");
+  if (!phone) return;
+
+  let address = prompt("请输入您的地址：");
+  if (!address) return;
+
+  // 生成订单
+  let order = {
+    name: name,
+    phone: phone,
+    address: address,
+    items: cart,
+    time: new Date().toLocaleString()
+  };
+
+  // 保存订单
+  let orders = JSON.parse(localStorage.getItem("myOrders") || "[]");
+  orders.push(order);
+  localStorage.setItem("myOrders", JSON.stringify(orders));
+
+  alert("订单提交成功！\n姓名：" + name + "\n电话：" + phone + "\n地址：" + address);
+  
+  // 提交后清空购物车
+  localStorage.removeItem("myCart");
+  renderCart();
+}
+
+// 查看我的订单（你自己看）
+function showMyOrders() {
+  let orders = JSON.parse(localStorage.getItem("myOrders") || "[]");
+  if (orders.length === 0) {
+    alert("暂无订单");
+    return;
+  }
+
+  let text = "📦 所有订单：\n\n";
+  orders.forEach((o, i) => {
+    text += "订单 " + (i + 1) + "：" + o.time + "\n";
+    text += "姓名：" + o.name + "  电话：" + o.phone + "\n";
+    text += "地址：" + o.address + "\n";
+    o.items.forEach(item => {
+      text += "- " + item.name + " ×" + item.quantity + "\n";
+    });
+    text += "------------------------\n";
+  });
+  alert(text);
+}
+</script>
+<button onclick="showMyOrders()" style="position:fixed; left:20px; bottom:20px; background:#28a745; color:white; padding:10px 16px; border-radius:50px; border:none;">查看订单</button>
+</body>
+</html>
